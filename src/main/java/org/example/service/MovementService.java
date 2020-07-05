@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class MovementService {
+    private static final String NEW_LINE = "\n";
     private static final Pattern BLANK_PATTERN = Pattern.compile(" ");
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("[GDA]*$");
 
@@ -122,8 +123,11 @@ public class MovementService {
 
     protected String lawnmowerPositionsToString(List<Lawnmower> list) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Lawnmower lawnmower : list) {
-            stringBuilder.append(lawnmower.toString()+"\n");
+        for (int i = 0; i < list.size(); i++) {
+            if (i > 0) {
+                stringBuilder.append(NEW_LINE);
+            }
+            stringBuilder.append(list.get(i).toString());
         }
         return stringBuilder.toString();
     }

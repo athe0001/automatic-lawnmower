@@ -55,5 +55,4 @@ You should receive this body in response:
 ```
 1 3 N
 5 1 E
-
 ```

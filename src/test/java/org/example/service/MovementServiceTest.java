@@ -19,7 +19,7 @@ public class MovementServiceTest {
         String[] lines = new String[]{"5 5", "1 2 N", "GAGAGAGAA", "3 3 E", "AADAADADDA"};
         String result = MOVEMENT_SERVICE.move(lines);
 
-        Assert.assertEquals("1 3 N\n5 1 E\n", result);
+        Assert.assertEquals("1 3 N\n5 1 E", result);
     }
 
     @Test(expected = InvalidPayloadException.class)
@@ -128,7 +128,7 @@ public class MovementServiceTest {
         lawnmowerList.add(new Lawnmower(1,1, Direction.EAST));
         lawnmowerList.add(new Lawnmower(2,5,Direction.NORTH));
 
-        String result = "1 1 E\n2 5 N\n";
+        String result = "1 1 E\n2 5 N";
         Assert.assertEquals(result, MOVEMENT_SERVICE.lawnmowerPositionsToString(lawnmowerList));
     }
 
