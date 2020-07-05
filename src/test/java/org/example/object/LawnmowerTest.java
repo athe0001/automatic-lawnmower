@@ -84,4 +84,19 @@ public class LawnmowerTest {
         Assert.assertEquals(0, lawnmower.getX());
         Assert.assertEquals(0, lawnmower.getY());
     }
+    @Test
+    public void testCreateLawnmowerFromString() {
+        Field field = new Field(1,1);
+        String param = "1 1 N";
+
+        Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(param.split(" "), field);
+        Assert.assertNotNull(lawnmower);
+        Assert.assertEquals(1, lawnmower.getX());
+        Assert.assertEquals(1, lawnmower.getY());
+        Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
+
+        String paramInvalid = "1 2 N";
+        Lawnmower lawnmower1 = Lawnmower.createLawnmowerFromString(paramInvalid.split(" "), field);
+        Assert.assertNull(lawnmower1);
+    }
 }

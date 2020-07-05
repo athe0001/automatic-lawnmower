@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @RestController
 public class MovementController {
 
@@ -23,7 +20,7 @@ public class MovementController {
         String[] lines = payload.split(System.getProperty("line.separator"));
 
         movementService.validatePayload(lines);
-        return movementService.move();
+        return movementService.move(lines);
     }
 
 

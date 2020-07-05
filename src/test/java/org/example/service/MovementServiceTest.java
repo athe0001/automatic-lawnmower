@@ -1,8 +1,11 @@
 package org.example.service;
 
 import org.example.exception.InvalidPayloadException;
+import org.example.object.Instruction;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
 
 public class MovementServiceTest {
 
@@ -86,6 +89,25 @@ public class MovementServiceTest {
             Assert.fail("InvalidPayloadException thrown even though the string is invalid");
         } catch (InvalidPayloadException ignored) {
         }
+    }
+
+    @Test
+    public void testCreateInstructionList() {
+        String instruction = "GAGAGADAA";
+
+        MovementService movementService = new MovementService();
+
+        List<Instruction> instructionList = movementService.createInstructionList(instruction);
+        Assert.assertEquals(9, instructionList.size());
+        Assert.assertEquals(Instruction.LEFT, instructionList.get(0));
+        Assert.assertEquals(Instruction.ADVANCE, instructionList.get(1));
+        Assert.assertEquals(Instruction.LEFT, instructionList.get(2));
+        Assert.assertEquals(Instruction.ADVANCE, instructionList.get(3));
+        Assert.assertEquals(Instruction.LEFT, instructionList.get(4));
+        Assert.assertEquals(Instruction.ADVANCE, instructionList.get(5));
+        Assert.assertEquals(Instruction.RIGHT, instructionList.get(6));
+        Assert.assertEquals(Instruction.ADVANCE, instructionList.get(7));
+        Assert.assertEquals(Instruction.ADVANCE, instructionList.get(8));
     }
 
 }

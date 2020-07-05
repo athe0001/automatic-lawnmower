@@ -1,6 +1,9 @@
 package org.example.object;
 
+import java.util.regex.Pattern;
+
 public class Field {
+    private static final Pattern BLANK = Pattern.compile(" ");
 
     private int topRightX;
     private int topRightY;
@@ -24,5 +27,9 @@ public class Field {
 
     public void setTopRightY(int topRightY) {
         this.topRightY = topRightY;
+    }
+
+    public static Field createFieldFromString(String[] dimensions) {
+        return new Field(Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
     }
 }

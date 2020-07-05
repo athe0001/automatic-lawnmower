@@ -114,4 +114,14 @@ public class Lawnmower {
         this.x = isItTowardEast ? this.x + 1 : this.x -1;
     }
 
+    public static Lawnmower createLawnmowerFromString(String[] lawnmowerInitParameter, Field field) {
+        int lawnmowerX = Integer.parseInt(lawnmowerInitParameter[0]);
+        int lawnmowerY = Integer.parseInt(lawnmowerInitParameter[1]);
+        Direction direction = Direction.fromLetter(lawnmowerInitParameter[2]);
+        if (lawnmowerX <= field.getTopRightX() && lawnmowerY <= field.getTopRightY() && direction != null) {
+            return new Lawnmower(lawnmowerX, lawnmowerY, direction);
+        }
+        return null;
+    }
+
 }

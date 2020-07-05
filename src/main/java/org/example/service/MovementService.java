@@ -1,8 +1,14 @@
 package org.example.service;
 
 import org.example.exception.InvalidPayloadException;
+import org.example.object.Direction;
+import org.example.object.Field;
+import org.example.object.Instruction;
+import org.example.object.Lawnmower;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,12 +16,20 @@ import java.util.regex.Pattern;
 public class MovementService {
     private static final Pattern BLANK = Pattern.compile(" ");
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("[GDA]*$");
-    private static final String NORTH = "N";
-    private static final String SOUTH = "S";
-    private static final String EAST = "E";
-    private static final String WEST = "W";
 
-    public String move() {
+    public String move(String[] lines) throws InvalidPayloadException {
+        Field field = Field.createFieldFromString(BLANK.split(lines[0]));
+        List<Lawnmower> lawnmowerList = new ArrayList<>();
+        List<List<Instruction>> instrunctionLists = new ArrayList<>();
+        for (int i = 1; i < lines.length; i +=2) {
+            Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(BLANK.split(lines[i]), field);
+            if (lawnmower == null) {
+                throw new InvalidPayloadException("The lanwmower (" + lines[i] + ") cannot be placed on the field");
+            }
+            //TODO Check if a lawnmower is already on the case
+            lawnmowerList.add(lawnmower);
+            instrunctionLists.add(createInstructionList(lines[i+1]));
+        }
         return "";
     }
 
@@ -55,7 +69,7 @@ public class MovementService {
     }
 
     private void validateDirection(String string) throws InvalidPayloadException {
-        if (!NORTH.equals(string) && !SOUTH.equals(string) && !EAST.equals(string) && !WEST.equals(string)) {
+        if (!Direction.NORTH.getLetter().equals(string) && !Direction.SOUTH.getLetter().equals(string) && !Direction.EAST.getLetter().equals(string) && !Direction.WEST.getLetter().equals(string)) {
             throw new InvalidPayloadException("The direction is neither NORTH, SOUTH, EAST or WEST: " + string);
         }
     }
@@ -79,4 +93,11 @@ public class MovementService {
         }
     }
 
+    protected List<Instruction> createInstructionList(String instructionString) {
+        List<Instruction> instructionList = new ArrayList<>();
+        for (int i = 0; i < instructionString.length() ; i++) {
+            instructionList.add(Instruction.fromLetter(instructionString.charAt(i)));
+        }
+        return instructionList;
+    }
 }
