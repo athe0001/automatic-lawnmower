@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.exception.InvalidPayloadException;
 import org.example.object.Direction;
-import org.example.object.Field;
 import org.example.object.Instruction;
 import org.example.object.Lawnmower;
 import org.junit.Assert;
