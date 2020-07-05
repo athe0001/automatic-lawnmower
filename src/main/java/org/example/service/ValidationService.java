@@ -13,6 +13,12 @@ import java.util.regex.Matcher;
 @Service
 public class ValidationService {
 
+    /**
+     * Check that the payload is valid (all characters in it are valid, format, etc.
+     * Does not check if the lawnmower can be placed in the field.
+     * @param lines
+     * @throws InvalidPayloadException
+     */
     public void validatePayload(String[] lines) throws InvalidPayloadException {
         if (lines.length % 2 != 1) {
             //If the number of line is not odd, it means we are missing some instructions
@@ -28,6 +34,11 @@ public class ValidationService {
 
     }
 
+    /**
+     * Check that the field line is valid
+     * @param fieldLine
+     * @throws InvalidPayloadException
+     */
     protected void validateField(String fieldLine) throws InvalidPayloadException {
         String[] dimensions = Constants.BLANK_PATTERN.split(fieldLine);
         if (dimensions.length != 2) {
@@ -38,6 +49,11 @@ public class ValidationService {
         }
     }
 
+    /**
+     * Check that the lawnmower lines are valid
+     * @param lawnmowerLine
+     * @throws InvalidPayloadException
+     */
     protected void validateLawnMowerInitialization(String lawnmowerLine) throws InvalidPayloadException {
         String[] initParameters = Constants.BLANK_PATTERN.split(lawnmowerLine);
         if (initParameters.length != 3) {
@@ -48,12 +64,22 @@ public class ValidationService {
         validateDirection(initParameters[2]);
     }
 
+    /**
+     * Check that the direction is valid
+     * @param string
+     * @throws InvalidPayloadException
+     */
     private void validateDirection(String string) throws InvalidPayloadException {
         if (!Direction.NORTH.getLetter().equals(string) && !Direction.SOUTH.getLetter().equals(string) && !Direction.EAST.getLetter().equals(string) && !Direction.WEST.getLetter().equals(string)) {
             throw new InvalidPayloadException("The direction is neither NORTH, SOUTH, EAST or WEST: " + string);
         }
     }
 
+    /**
+     * Check that all instructions are valid
+     * @param string
+     * @throws InvalidPayloadException
+     */
     protected void validateInstructions(String string) throws InvalidPayloadException {
         Matcher matcher = Constants.INSTRUCTION_PATTERN.matcher(string);
         if (!matcher.matches()) {
@@ -61,6 +87,11 @@ public class ValidationService {
         }
     }
 
+    /**
+     * Validate that the string is an int
+     * @param string
+     * @throws InvalidPayloadException
+     */
     private void validateInt(String string) throws InvalidPayloadException{
         if (string == null) {
             throw new InvalidPayloadException("The string is null.");
@@ -73,7 +104,14 @@ public class ValidationService {
         }
     }
 
-    protected boolean validateMovementPossible(Field field, Lawnmower lawnmower, List<Lawnmower> lawnmowerList) {
+    /**
+     * Check that the movement of the lawnmower is possible
+     * @param field
+     * @param lawnmower
+     * @param lawnmowerList
+     * @return whether the lawnmower can advance
+     */
+    protected boolean checkMovementPossible(Field field, Lawnmower lawnmower, List<Lawnmower> lawnmowerList) {
         Direction direction = lawnmower.getDirection();
         int newPos;
         switch (direction) {
@@ -104,6 +142,13 @@ public class ValidationService {
         return false;
     }
 
+    /**
+     * Check if the case is not occupied that another lawnmower
+     * @param newX
+     * @param newY
+     * @param lawnmowerList
+     * @return whether the case is empty
+     */
     protected boolean canMoveInTheCase(int newX, int newY, List<Lawnmower> lawnmowerList) {
         boolean canMove = true;
         for (Lawnmower lawnmower : lawnmowerList) {

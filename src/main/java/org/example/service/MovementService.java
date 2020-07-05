@@ -18,6 +18,12 @@ public class MovementService {
         this.validationService = validationService;
     }
 
+    /**
+     * Moves the lawnmower in the payload
+     * @param lines
+     * @return positions of each lawnmower
+     * @throws InvalidPayloadException if the lawnmower cannot be placed on the field
+     */
     public String move(String[] lines) throws InvalidPayloadException {
         Field field = Field.createFieldFromString(Constants.BLANK_PATTERN.split(lines[0]));
         List<Lawnmower> lawnmowerList = new ArrayList<>();
@@ -37,11 +43,18 @@ public class MovementService {
         return lawnmowerPositionsToString(lawnmowerList);
     }
 
+    /**
+     * Move the lawnmower if the movement is possible
+     * @param field
+     * @param lawnmower
+     * @param lawnmowerList
+     * @param instructionList
+     */
     private void moveLawnmower(Field field, Lawnmower lawnmower, List<Lawnmower> lawnmowerList, List<Instruction> instructionList) {
         for (Instruction instruction : instructionList) {
             switch (instruction) {
                 case ADVANCE:
-                    if (validationService.validateMovementPossible(field, lawnmower, lawnmowerList)) {
+                    if (validationService.checkMovementPossible(field, lawnmower, lawnmowerList)) {
                         lawnmower.advanceOneCase();
                     }
                     break;
@@ -51,6 +64,11 @@ public class MovementService {
         }
     }
 
+    /**
+     * Create an instruction list given a string of instruction
+     * @param instructionString
+     * @return instruction list
+     */
     protected List<Instruction> createInstructionList(String instructionString) {
         List<Instruction> instructionList = new ArrayList<>();
         for (int i = 0; i < instructionString.length() ; i++) {
@@ -59,6 +77,11 @@ public class MovementService {
         return instructionList;
     }
 
+    /**
+     * Print the state of the lawnmowers
+     * @param list
+     * @return lawnmowers' state
+     */
     protected String lawnmowerPositionsToString(List<Lawnmower> list) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
