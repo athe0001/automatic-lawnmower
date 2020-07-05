@@ -1,5 +1,6 @@
 package org.example.service;
 
+import javafx.util.Pair;
 import org.example.exception.InvalidPayloadException;
 import org.example.object.Direction;
 import org.example.object.Field;
@@ -19,18 +20,29 @@ public class MovementService {
 
     public String move(String[] lines) throws InvalidPayloadException {
         Field field = Field.createFieldFromString(BLANK.split(lines[0]));
-        List<Lawnmower> lawnmowerList = new ArrayList<>();
-        List<List<Instruction>> instrunctionLists = new ArrayList<>();
+        List<Pair<Lawnmower, List<Instruction>>> lawnmowerAndInstructionLists = new ArrayList<>();
         for (int i = 1; i < lines.length; i +=2) {
             Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(BLANK.split(lines[i]), field);
             if (lawnmower == null) {
                 throw new InvalidPayloadException("The lanwmower (" + lines[i] + ") cannot be placed on the field");
             }
             //TODO Check if a lawnmower is already on the case
-            lawnmowerList.add(lawnmower);
-            instrunctionLists.add(createInstructionList(lines[i+1]));
+            lawnmowerAndInstructionLists.add(new Pair<>(lawnmower, createInstructionList(lines[i+1])));
         }
         return "";
+    }
+
+    protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Instruction> instructionList) {
+        for (Instruction instruction : instructionList) {
+            switch (instruction) {
+                case ADVANCE:
+                    //TODO check if we can advance (if there is another lawnmower on the case)
+                    lawnmower.advanceOneCase(field);
+                    break;
+                default:
+                    lawnmower.rotate(instruction);
+            }
+        }
     }
 
     public void validatePayload(String[] lines) throws InvalidPayloadException {

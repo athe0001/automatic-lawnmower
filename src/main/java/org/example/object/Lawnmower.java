@@ -59,12 +59,12 @@ public class Lawnmower {
         }
     }
 
-    public void rotate(String rotation) {
-        switch (rotation) {
-            case "G":
+    public void rotate(Instruction instruction) {
+        switch (instruction) {
+            case LEFT:
                 rotate(true);
                 break;
-            case "D":
+            case RIGHT:
                 rotate(false);
                 break;
             default:
