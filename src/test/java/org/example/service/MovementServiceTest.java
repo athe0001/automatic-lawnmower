@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.exception.InvalidPayloadException;
 import org.example.object.Direction;
+import org.example.object.Field;
 import org.example.object.Instruction;
 import org.example.object.Lawnmower;
 import org.junit.Assert;
@@ -130,6 +131,16 @@ public class MovementServiceTest {
 
         String result = "1 1 E\n2 5 N\n";
         Assert.assertEquals(result, MOVEMENT_SERVICE.lawnmowerPositionsToString(lawnmowerList));
+    }
+
+    @Test
+    public void testCanMoveInCase(){
+        List<Lawnmower> lawnmowerList = new ArrayList<>();
+        lawnmowerList.add(new Lawnmower(1,1, Direction.NORTH));
+        lawnmowerList.add(new Lawnmower(1,2,Direction.EAST));
+
+        Assert.assertFalse(MOVEMENT_SERVICE.canMoveInTheCase(1,1, lawnmowerList));
+        Assert.assertTrue(MOVEMENT_SERVICE.canMoveInTheCase(1,3, lawnmowerList));
     }
 
 }

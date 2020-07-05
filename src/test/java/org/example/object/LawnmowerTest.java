@@ -34,10 +34,6 @@ public class LawnmowerTest {
 
         lawnmower.rotate(instructionRight);
         Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
-
-        //Do nothing
-        lawnmower.rotate(null);
-        Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
     }
 
     @Test
@@ -45,42 +41,22 @@ public class LawnmowerTest {
         Field field = new Field(1,1);
         Lawnmower lawnmower = new Lawnmower(0,0, Direction.NORTH);
 
-        lawnmower.advanceOneCase(field);
-        Assert.assertEquals(0, lawnmower.getX());
-        Assert.assertEquals(1, lawnmower.getY());
-
-        //Do nothing since end of field
-        lawnmower.advanceOneCase(field);
+        lawnmower.advanceOneCase();
         Assert.assertEquals(0, lawnmower.getX());
         Assert.assertEquals(1, lawnmower.getY());
 
         lawnmower.setDirection(Direction.EAST);
-        lawnmower.advanceOneCase(field);
-        Assert.assertEquals(1, lawnmower.getX());
-        Assert.assertEquals(1, lawnmower.getY());
-
-        //Do nothing since end of field
-        lawnmower.advanceOneCase(field);
+        lawnmower.advanceOneCase();
         Assert.assertEquals(1, lawnmower.getX());
         Assert.assertEquals(1, lawnmower.getY());
 
         lawnmower.setDirection(Direction.SOUTH);
-        lawnmower.advanceOneCase(field);
-        Assert.assertEquals(1, lawnmower.getX());
-        Assert.assertEquals(0, lawnmower.getY());
-
-        //Do nothing since end of field
-        lawnmower.advanceOneCase(field);
+        lawnmower.advanceOneCase();
         Assert.assertEquals(1, lawnmower.getX());
         Assert.assertEquals(0, lawnmower.getY());
 
         lawnmower.setDirection(Direction.WEST);
-        lawnmower.advanceOneCase(field);
-        Assert.assertEquals(0, lawnmower.getX());
-        Assert.assertEquals(0, lawnmower.getY());
-
-        //Do nothing since end of field
-        lawnmower.advanceOneCase(field);
+        lawnmower.advanceOneCase();
         Assert.assertEquals(0, lawnmower.getX());
         Assert.assertEquals(0, lawnmower.getY());
     }

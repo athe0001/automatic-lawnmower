@@ -36,27 +36,20 @@ public class Lawnmower {
         this.direction = direction;
     }
 
-    public void advanceOneCase(Field field) {
+    public void advanceOneCase() {
         switch (this.direction) {
             case NORTH:
-                if (this.y + 1 <= field.getTopRightY()) {
-                    moveAlongY(true);
-                }
+                moveAlongY(true);
                 break;
             case SOUTH:
-                if (this.y - 1 >= 0) {
-                    moveAlongY(false);
-                }
+                moveAlongY(false);
                 break;
             case EAST:
-                if (this.x + 1 <= field.getTopRightX()) {
-                    moveAlongX(true);
-                }
+                moveAlongX(true);
                 break;
             case WEST:
-                if (this.x - 1 >= 0) {
-                    moveAlongX(false);
-                }
+                moveAlongX(false);
+                break;
         }
     }
 

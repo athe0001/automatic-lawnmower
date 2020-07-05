@@ -31,18 +31,20 @@ public class MovementService {
             instructionList.add(createInstructionList(lines[i+1]));
         }
         for (int i = 0; i < lawnmowerList.size(); i++) {
-            moveLawnmower(field, lawnmowerList.get(i), instructionList.get(i));
+            moveLawnmower(field, lawnmowerList.get(i), lawnmowerList, instructionList.get(i));
         }
 
         return lawnmowerPositionsToString(lawnmowerList);
     }
 
-    protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Instruction> instructionList) {
+    protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Lawnmower> lawnmowerList, List<Instruction> instructionList) {
         for (Instruction instruction : instructionList) {
             switch (instruction) {
                 case ADVANCE:
+                    if (validateMovementPossible(field, lawnmower, lawnmowerList)) {
+                        lawnmower.advanceOneCase();
+                    }
                     //TODO check if we can advance (if there is another lawnmower on the case)
-                    lawnmower.advanceOneCase(field);
                     break;
                 default:
                     lawnmower.rotate(instruction);
@@ -124,5 +126,47 @@ public class MovementService {
             stringBuilder.append(lawnmower.toString()+"\n");
         }
         return stringBuilder.toString();
+    }
+
+    protected boolean validateMovementPossible(Field field, Lawnmower lawnmower, List<Lawnmower> lawnmowerList) {
+        Direction direction = lawnmower.getDirection();
+        int newPos;
+        switch (direction) {
+            case NORTH:
+                newPos = lawnmower.getY() + 1;
+                if (newPos <= field.getTopRightY() && canMoveInTheCase(lawnmower.getX(), newPos, lawnmowerList)) {
+                    return true;
+                }
+                break;
+            case SOUTH:
+                newPos = lawnmower.getY() - 1;
+                if (newPos >= 0 && canMoveInTheCase(lawnmower.getX(), newPos, lawnmowerList)) {
+                    return true;
+                }
+                break;
+            case EAST:
+                newPos = lawnmower.getX() + 1;
+                if (newPos <= field.getTopRightX() && canMoveInTheCase(newPos, lawnmower.getY(), lawnmowerList)) {
+                    return true;
+                }
+                break;
+            case WEST:
+                newPos = lawnmower.getX() - 1;
+                if (newPos >= 0 && canMoveInTheCase(newPos, lawnmower.getY(), lawnmowerList)) {
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    protected boolean canMoveInTheCase(int newX, int newY, List<Lawnmower> lawnmowerList) {
+        boolean canMove = true;
+        for (Lawnmower lawnmower : lawnmowerList) {
+            if (newX == lawnmower.getX() && newY == lawnmower.getY()) {
+                canMove = false;
+                break;
+            }
+        }
+        return canMove;
     }
 }
