@@ -27,7 +27,6 @@ public class MovementService {
             if (lawnmower == null) {
                 throw new InvalidPayloadException("The lanwmower (" + lines[i] + ") cannot be placed on the field");
             }
-            //TODO Check if a lawnmower is already on the case
             lawnmowerList.add(lawnmower);
             instructionList.add(createInstructionList(lines[i+1]));
         }
@@ -45,7 +44,6 @@ public class MovementService {
                     if (validateMovementPossible(field, lawnmower, lawnmowerList)) {
                         lawnmower.advanceOneCase();
                     }
-                    //TODO check if we can advance (if there is another lawnmower on the case)
                     break;
                 default:
                     lawnmower.rotate(instruction);
