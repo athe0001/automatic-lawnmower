@@ -1,6 +1,5 @@
 package org.example.service;
 
-import javafx.util.Pair;
 import org.example.exception.InvalidPayloadException;
 import org.example.object.Direction;
 import org.example.object.Field;
@@ -35,7 +34,7 @@ public class MovementService {
             moveLawnmower(field, lawnmowerList.get(i), instructionList.get(i));
         }
 
-        return lawnmowerPostionsToString(lawnmowerList);
+        return lawnmowerPositionsToString(lawnmowerList);
     }
 
     protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Instruction> instructionList) {
@@ -119,7 +118,7 @@ public class MovementService {
         return instructionList;
     }
 
-    protected String lawnmowerPostionsToString(List<Lawnmower> list) {
+    protected String lawnmowerPositionsToString(List<Lawnmower> list) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Lawnmower lawnmower : list) {
             stringBuilder.append(lawnmower.toString()+"\n");
