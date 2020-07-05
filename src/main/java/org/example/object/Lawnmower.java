@@ -124,4 +124,8 @@ public class Lawnmower {
         return null;
     }
 
+    public String toString() {
+        return this.x + " " + this.y + " " +this.direction.getLetter();
+    }
+
 }

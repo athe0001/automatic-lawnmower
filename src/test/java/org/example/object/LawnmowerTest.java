@@ -8,35 +8,35 @@ public class LawnmowerTest {
     @Test
     public void testRotation() {
         Lawnmower lawnmower = new Lawnmower(0, 0, Direction.NORTH);
-        String rotateLeft = "G";
+       Instruction instructionLeft = Instruction.fromLetter('G');
 
-        lawnmower.rotate(rotateLeft);
+        lawnmower.rotate(instructionLeft);
         Assert.assertEquals(Direction.WEST, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateLeft);
+        lawnmower.rotate(instructionLeft);
         Assert.assertEquals(Direction.SOUTH, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateLeft);
+        lawnmower.rotate(instructionLeft);
         Assert.assertEquals(Direction.EAST, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateLeft);
+        lawnmower.rotate(instructionLeft);
         Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
 
-        String rotateRight = "D";
-        lawnmower.rotate(rotateRight);
+        Instruction instructionRight = Instruction.fromLetter('D');
+        lawnmower.rotate(instructionRight);
         Assert.assertEquals(Direction.EAST, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateRight);
+        lawnmower.rotate(instructionRight);
         Assert.assertEquals(Direction.SOUTH, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateRight);
+        lawnmower.rotate(instructionRight);
         Assert.assertEquals(Direction.WEST, lawnmower.getDirection());
 
-        lawnmower.rotate(rotateRight);
+        lawnmower.rotate(instructionRight);
         Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
 
         //Do nothing
-        lawnmower.rotate("TEST");
+        lawnmower.rotate(null);
         Assert.assertEquals(Direction.NORTH, lawnmower.getDirection());
     }
 

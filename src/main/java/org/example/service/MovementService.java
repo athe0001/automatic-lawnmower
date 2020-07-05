@@ -15,21 +15,26 @@ import java.util.regex.Pattern;
 
 @Service
 public class MovementService {
-    private static final Pattern BLANK = Pattern.compile(" ");
+    private static final String BLANK = " ";
+    private static final Pattern BLANK_PATTERN = Pattern.compile(" ");
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("[GDA]*$");
 
     public String move(String[] lines) throws InvalidPayloadException {
-        Field field = Field.createFieldFromString(BLANK.split(lines[0]));
+        Field field = Field.createFieldFromString(BLANK_PATTERN.split(lines[0]));
         List<Pair<Lawnmower, List<Instruction>>> lawnmowerAndInstructionLists = new ArrayList<>();
         for (int i = 1; i < lines.length; i +=2) {
-            Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(BLANK.split(lines[i]), field);
+            Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(BLANK_PATTERN.split(lines[i]), field);
             if (lawnmower == null) {
                 throw new InvalidPayloadException("The lanwmower (" + lines[i] + ") cannot be placed on the field");
             }
             //TODO Check if a lawnmower is already on the case
             lawnmowerAndInstructionLists.add(new Pair<>(lawnmower, createInstructionList(lines[i+1])));
         }
-        return "";
+        for (Pair<Lawnmower, List<Instruction>> lawnmowerAndInstructionPair : lawnmowerAndInstructionLists) {
+            moveLawnmower(field, lawnmowerAndInstructionPair.getKey(), lawnmowerAndInstructionPair.getValue());
+        }
+
+        return lawnmowerPostionsToString(lawnmowerAndInstructionLists);
     }
 
     protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Instruction> instructionList) {
@@ -61,7 +66,7 @@ public class MovementService {
     }
 
     protected void validateField(String fieldLine) throws InvalidPayloadException {
-        String[] dimensions = BLANK.split(fieldLine);
+        String[] dimensions = BLANK_PATTERN.split(fieldLine);
         if (dimensions.length != 2) {
             throw new InvalidPayloadException("There is not 2 dimensions in the field initialization line: " + dimensions.length);
         }
@@ -71,7 +76,7 @@ public class MovementService {
     }
 
     protected void validateLawnMowerInitialization(String lawnmowerLine) throws InvalidPayloadException {
-        String[] initParameters = BLANK.split(lawnmowerLine);
+        String[] initParameters = BLANK_PATTERN.split(lawnmowerLine);
         if (initParameters.length != 3) {
             throw new InvalidPayloadException("There is not 3 parameters in the lawnmower initialization line: " + initParameters.length);
         }
@@ -111,5 +116,13 @@ public class MovementService {
             instructionList.add(Instruction.fromLetter(instructionString.charAt(i)));
         }
         return instructionList;
+    }
+
+    protected String lawnmowerPostionsToString(List<Pair<Lawnmower, List<Instruction>>> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Pair<Lawnmower, List<Instruction>> pair : list) {
+            stringBuilder.append(pair.getKey().toString()+"\n");
+        }
+        return stringBuilder.toString();
     }
 }
