@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MovementServiceTest {
 
-    private static final MovementService  MOVEMENT_SERVICE = new MovementService();
+    private static final MovementService  MOVEMENT_SERVICE = new MovementService(new ValidationService());
 
     @Test
     public void testMove() throws InvalidPayloadException {
@@ -26,83 +26,6 @@ public class MovementServiceTest {
     public void testMoveInvalidLawnmowerPosition() throws InvalidPayloadException {
         String[] lines = new String[]{"5 5", "6 2 N", "GAGAGAGAA"};
         MOVEMENT_SERVICE.move(lines);
-    }
-
-
-    @Test
-    public void testValidateField() {
-        String valid = "10 5";
-        String invalid1 = "5 a";
-        String invalid2 = "10 10 10";
-
-        try {
-            MOVEMENT_SERVICE.validateField(valid);
-        } catch (InvalidPayloadException e) {
-            Assert.fail("InvalidPayloadException thrown even though the string is valid");
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateField(invalid1);
-            Assert.fail("InvalidPayloadException thrown even though the string is invalid");
-        } catch (InvalidPayloadException ignored) {
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateField(invalid2);
-            Assert.fail("InvalidPayloadException thrown even though the string is invalid");
-        } catch (InvalidPayloadException ignored) {
-        }
-    }
-
-    @Test
-    public void testValidateLawnMowerInitialization() {
-        String valid = "1 1 N";
-        String valid1 = "10 1 E";
-
-        String invalid = "a 10 N";
-        String invalid1 = "10 10 D";
-
-        try {
-            MOVEMENT_SERVICE.validateLawnMowerInitialization(valid);
-        } catch (InvalidPayloadException e) {
-            Assert.fail("InvalidPayloadException thrown even though the string is valid");
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateLawnMowerInitialization(valid1);
-        } catch (InvalidPayloadException e) {
-            Assert.fail("InvalidPayloadException thrown even though the string is valid");
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateLawnMowerInitialization(invalid);
-            Assert.fail("InvalidPayloadException thrown even though the string is invalid");
-        } catch (InvalidPayloadException ignored) {
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateLawnMowerInitialization(invalid1);
-            Assert.fail("InvalidPayloadException thrown even though the string is invalid");
-        } catch (InvalidPayloadException ignored) {
-        }
-    }
-
-    @Test
-    public void testValidateInstructions() {
-        String valid = "GAGAGADAA";
-        String invalid = "GAGAGAGAAZ";
-
-        try {
-            MOVEMENT_SERVICE.validateInstructions(valid);
-        } catch (InvalidPayloadException e) {
-            Assert.fail("InvalidPayloadException thrown even though the string is valid");
-        }
-
-        try {
-            MOVEMENT_SERVICE.validateInstructions(invalid);
-            Assert.fail("InvalidPayloadException thrown even though the string is invalid");
-        } catch (InvalidPayloadException ignored) {
-        }
     }
 
     @Test
@@ -130,16 +53,6 @@ public class MovementServiceTest {
 
         String result = "1 1 E\n2 5 N";
         Assert.assertEquals(result, MOVEMENT_SERVICE.lawnmowerPositionsToString(lawnmowerList));
-    }
-
-    @Test
-    public void testCanMoveInCase(){
-        List<Lawnmower> lawnmowerList = new ArrayList<>();
-        lawnmowerList.add(new Lawnmower(1,1, Direction.NORTH));
-        lawnmowerList.add(new Lawnmower(1,2,Direction.EAST));
-
-        Assert.assertFalse(MOVEMENT_SERVICE.canMoveInTheCase(1,1, lawnmowerList));
-        Assert.assertTrue(MOVEMENT_SERVICE.canMoveInTheCase(1,3, lawnmowerList));
     }
 
 }

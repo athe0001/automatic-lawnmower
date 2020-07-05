@@ -3,8 +3,6 @@ package org.example.object;
 import java.util.regex.Pattern;
 
 public class Field {
-    private static final Pattern BLANK = Pattern.compile(" ");
-
     private int topRightX;
     private int topRightY;
 
