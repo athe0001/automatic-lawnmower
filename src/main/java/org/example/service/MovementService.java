@@ -15,26 +15,27 @@ import java.util.regex.Pattern;
 
 @Service
 public class MovementService {
-    private static final String BLANK = " ";
     private static final Pattern BLANK_PATTERN = Pattern.compile(" ");
     private static final Pattern INSTRUCTION_PATTERN = Pattern.compile("[GDA]*$");
 
     public String move(String[] lines) throws InvalidPayloadException {
         Field field = Field.createFieldFromString(BLANK_PATTERN.split(lines[0]));
-        List<Pair<Lawnmower, List<Instruction>>> lawnmowerAndInstructionLists = new ArrayList<>();
+        List<Lawnmower> lawnmowerList = new ArrayList<>();
+        List<List<Instruction>> instructionList = new ArrayList<>();
         for (int i = 1; i < lines.length; i +=2) {
             Lawnmower lawnmower = Lawnmower.createLawnmowerFromString(BLANK_PATTERN.split(lines[i]), field);
             if (lawnmower == null) {
                 throw new InvalidPayloadException("The lanwmower (" + lines[i] + ") cannot be placed on the field");
             }
             //TODO Check if a lawnmower is already on the case
-            lawnmowerAndInstructionLists.add(new Pair<>(lawnmower, createInstructionList(lines[i+1])));
+            lawnmowerList.add(lawnmower);
+            instructionList.add(createInstructionList(lines[i+1]));
         }
-        for (Pair<Lawnmower, List<Instruction>> lawnmowerAndInstructionPair : lawnmowerAndInstructionLists) {
-            moveLawnmower(field, lawnmowerAndInstructionPair.getKey(), lawnmowerAndInstructionPair.getValue());
+        for (int i = 0; i < lawnmowerList.size(); i++) {
+            moveLawnmower(field, lawnmowerList.get(i), instructionList.get(i));
         }
 
-        return lawnmowerPostionsToString(lawnmowerAndInstructionLists);
+        return lawnmowerPostionsToString(lawnmowerList);
     }
 
     protected void moveLawnmower(Field field, Lawnmower lawnmower, List<Instruction> instructionList) {
@@ -118,10 +119,10 @@ public class MovementService {
         return instructionList;
     }
 
-    protected String lawnmowerPostionsToString(List<Pair<Lawnmower, List<Instruction>>> list) {
+    protected String lawnmowerPostionsToString(List<Lawnmower> list) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Pair<Lawnmower, List<Instruction>> pair : list) {
-            stringBuilder.append(pair.getKey().toString()+"\n");
+        for (Lawnmower lawnmower : list) {
+            stringBuilder.append(lawnmower.toString()+"\n");
         }
         return stringBuilder.toString();
     }

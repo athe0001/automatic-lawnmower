@@ -1,6 +1,7 @@
 package org.example.object;
 
 public class Lawnmower {
+    private static final String BLANK = " ";
     private int x;
     private int y;
     private Direction direction;
@@ -125,7 +126,7 @@ public class Lawnmower {
     }
 
     public String toString() {
-        return this.x + " " + this.y + " " +this.direction.getLetter();
+        return this.x + BLANK + this.y +BLANK +this.direction.getLetter();
     }
 
 }
